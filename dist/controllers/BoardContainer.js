@@ -12,7 +12,6 @@ var _redux = require("redux");
 var _reactRedux = require("react-redux");
 var _Container = _interopRequireDefault(require("../dnd/Container"));
 var _Draggable = _interopRequireDefault(require("../dnd/Draggable"));
-var _propTypes = _interopRequireDefault(require("prop-types"));
 var _pick = _interopRequireDefault(require("lodash/pick"));
 var _isEqual = _interopRequireDefault(require("lodash/isEqual"));
 var _Lane = _interopRequireDefault(require("./Lane"));

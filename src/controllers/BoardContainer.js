@@ -1,41 +1,40 @@
-import React, { useState, useEffect } from 'react'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
+import React, {useEffect, useState} from 'react'
+import {bindActionCreators} from 'redux'
+import {connect} from 'react-redux'
 import Container from '../dnd/Container'
 import Draggable from '../dnd/Draggable'
-import PropTypes from 'prop-types'
 import pick from 'lodash/pick'
 import isEqual from 'lodash/isEqual'
 import Lane from './Lane'
-import { PopoverWrapper } from 'react-popopo'
+import {PopoverWrapper} from 'react-popopo'
 
 import * as boardActions from '../actions/BoardActions'
 import * as laneActions from '../actions/LaneActions'
 
 const BoardContainer = ({
-                          id,
-                          components,
-                          data,
-                          reducerData,
-                          onDataChange,
-                          eventBusHandle,
-                          onLaneScroll,
-                          onCardClick,
-                          onBeforeCardDelete,
-                          onCardDelete,
-                          onCardAdd,
-                          onCardUpdate,
-                          onLaneClick,
-                          onLaneAdd,
-                          onLaneDelete,
-                          onLaneUpdate,
-                          editable,
-                          canAddLanes,
-                          laneStyle,
-                          onCardMoveAcrossLanes,
-                          t,
-                          ...otherProps
-                        }) => {
+  id,
+  components,
+  data,
+  reducerData,
+  onDataChange,
+  eventBusHandle,
+  onLaneScroll,
+  onCardClick,
+  onBeforeCardDelete,
+  onCardDelete,
+  onCardAdd,
+  onCardUpdate,
+  onLaneClick,
+  onLaneAdd,
+  onLaneDelete,
+  onLaneUpdate,
+  editable,
+  canAddLanes,
+  laneStyle,
+  onCardMoveAcrossLanes,
+  t,
+  ...otherProps
+}) => {
   const [addLaneMode, setAddLaneMode] = useState(false)
 
   const groupName = `TrelloBoard${id}`
@@ -53,13 +52,13 @@ const BoardContainer = ({
     }
   }, [reducerData])
 
-  const onDragStart = ({ payload }) => {
+  const onDragStart = ({payload}) => {
     handleLaneDragStart(payload.id)
   }
 
-  const onLaneDrop = ({ removedIndex, addedIndex, payload }) => {
+  const onLaneDrop = ({removedIndex, addedIndex, payload}) => {
     if (removedIndex !== addedIndex) {
-      actions.moveLane({ oldIndex: removedIndex, newIndex: addedIndex })
+      actions.moveLane({oldIndex: removedIndex, newIndex: addedIndex})
       handleLaneDragEnd(removedIndex, addedIndex, payload)
     }
   }
@@ -77,11 +76,11 @@ const BoardContainer = ({
       publish: event => {
         switch (event.type) {
           case 'ADD_CARD':
-            return actions.addCard({ laneId: event.laneId, card: event.card })
+            return actions.addCard({laneId: event.laneId, card: event.card})
           case 'UPDATE_CARD':
-            return actions.updateCard({ laneId: event.laneId, card: event.card })
+            return actions.updateCard({laneId: event.laneId, card: event.card})
           case 'REMOVE_CARD':
-            return actions.removeCard({ laneId: event.laneId, cardId: event.cardId })
+            return actions.removeCard({laneId: event.laneId, cardId: event.cardId})
           case 'REFRESH_BOARD':
             return actions.loadBoard(event.data)
           case 'MOVE_CARD':
@@ -92,9 +91,9 @@ const BoardContainer = ({
               index: event.index
             })
           case 'UPDATE_CARDS':
-            return actions.updateCards({ laneId: event.laneId, cards: event.cards })
+            return actions.updateCards({laneId: event.laneId, cards: event.cards})
           case 'UPDATE_CARD':
-            return actions.updateCard({ laneId: event.laneId, updatedCard: event.card })
+            return actions.updateCard({laneId: event.laneId, updatedCard: event.card})
           case 'UPDATE_LANES':
             return actions.updateLanes(event.lanes)
           case 'UPDATE_LANE':
@@ -158,7 +157,7 @@ const BoardContainer = ({
           getChildPayload={index => getLaneDetails(index)}
           groupName={groupName}>
           {reducerData.lanes.map((lane, index) => {
-            const { id, droppable, ...otherProps } = lane
+            const {id, droppable, ...otherProps} = lane
             const laneToRender = (
               <Lane
                 key={id}
@@ -194,12 +193,9 @@ const BoardContainer = ({
 }
 
 const mapStateToProps = state => {
-  return state.lanes ? { reducerData: state } : {}
+  return state.lanes ? {reducerData: state} : {}
 }
 
-const mapDispatchToProps = dispatch => ({ actions: bindActionCreators({ ...boardActions, ...laneActions }, dispatch) })
+const mapDispatchToProps = dispatch => ({actions: bindActionCreators({...boardActions, ...laneActions}, dispatch)})
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(BoardContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(BoardContainer)

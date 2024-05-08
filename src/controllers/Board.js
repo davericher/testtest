@@ -19,7 +19,7 @@ const Board = ({ id, className, components }) => {
     <Provider store={store}>
       <>
         <components.GlobalStyle />
-        <BoardContainer id={storeId} className={allClassNames} />
+        <BoardContainer components={components} id={storeId} className={allClassNames} />
       </>
     </Provider>
   )

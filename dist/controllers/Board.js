@@ -30,6 +30,7 @@ var Board = _ref => {
     store: store,
     children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
       children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(components.GlobalStyle, {}), /*#__PURE__*/(0, _jsxRuntime.jsx)(_BoardContainer.default, {
+        components: components,
         id: storeId,
         className: allClassNames
       })]
