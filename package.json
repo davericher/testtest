@@ -18,12 +18,15 @@
     "kuika-smooth-dnd": "1.0.0",
     "lodash": ">= 4.17.11",
     "prop-types": "^15.7.2",
-    "react-popopo": "^2.1.9",
-    "react-redux": ">= 5.0.7",
-    "redux": ">= 4.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-redux": "^8.0.2",
+    "redux": "^4.2.0",
     "redux-actions": ">= 2.6.1",
     "redux-logger": ">= 3.0.6",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.2",
+    "react-popopo": "^2.1.9",
+    "styled-components": "^6.1.10"
   },
   "devDependencies": {
     "@babel/cli": "^7.24.5",
@@ -44,19 +47,16 @@
     "identity-obj-proxy": "^3.0.0",
     "prettier": "^3.2.5",
     "pretty-quick": "^4.0.0",
-    "react": "^16.8.0",
-    "react-dom": "^16.8.0",
-    "react-i18next": "^10.11.0",
-    "styled-components": "4.0.3"
+    "react-i18next": "^10.11.0"
   },
   "peerDependencies": {
     "lodash": ">= 4.17.11",
-    "react": "*",
-    "react-dom": "*",
-    "react-redux": ">= 5.0.7",
+    "react": ">= 18.0.0",
+    "react-dom": ">= 18.0.0",
+    "react-redux": ">= 8.0.2",
     "redux": ">= 4.0.0",
     "redux-actions": ">= 2.6.1",
     "redux-logger": ">= 3.0.6",
-    "styled-components": ">= 4.0.3"
+    "styled-components": ">= 6.1.10"
   }
 }

@@ -1,89 +1,91 @@
-import React from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import PropTypes from 'prop-types'
 import {InlineInput} from '../styles/Base'
 import autosize from 'autosize'
 
-class InlineInputController extends React.Component {
-  onFocus = e => e.target.select()
+const InlineInputController = ({onSave, border, placeholder, value, autoFocus, resize, onCancel}) => {
+  const inputRef = useRef(null)
+  const [inputValue, setInputValue] = useState(value)
 
-  // This is the way to select all text if mouse clicked
-  onMouseDown = e => {
-    if (document.activeElement != e.target) {
+  // Effect for autosizing and initial autoFocus
+  useEffect(() => {
+    if (inputRef.current && resize !== 'none') {
+      autosize(inputRef.current)
+    }
+    if (inputRef.current && autoFocus) {
+      inputRef.current.focus()
+    }
+  }, [resize, autoFocus])
+
+  // Effect to update value when props change
+  useEffect(() => {
+    setInputValue(value)
+  }, [value])
+
+  const handleFocus = e => e.target.select()
+
+  const handleMouseDown = e => {
+    if (document.activeElement !== e.target) {
       e.preventDefault()
-      this.refInput.focus()
+      inputRef.current.focus()
     }
   }
 
-  onBlur = () => {
-    this.updateValue()
+  const handleBlur = () => {
+    updateValue()
   }
 
-  onKeyDown = e => {
-    if (e.keyCode == 13) {
-      this.refInput.blur()
+  const handleKeyDown = e => {
+    if (e.keyCode === 13) {
+      // Enter
+      inputRef.current.blur()
       e.preventDefault()
-    }
-    if (e.keyCode == 27) {
-      this.setValue(this.props.value)
-      this.refInput.blur()
+    } else if (e.keyCode === 27) {
+      // Escape
+      setInputValue(value) // Reset to initial value
+      inputRef.current.blur()
       e.preventDefault()
-    }
-    if (e.keyCode == 9) {
-      if (this.getValue().length == 0) {
-        this.props.onCancel()
+    } else if (e.keyCode === 9) {
+      // Tab
+      if (inputValue.length === 0) {
+        onCancel()
       }
-      this.refInput.blur()
+      inputRef.current.blur()
       e.preventDefault()
     }
   }
 
-  getValue = () => this.refInput.value
-  setValue = value => (this.refInput.value = value)
-
-  updateValue = () => {
-    if (this.getValue() != this.props.value) {
-      this.props.onSave(this.getValue())
+  const updateValue = () => {
+    if (inputValue !== value) {
+      onSave(inputValue)
     }
   }
 
-  setRef = ref => {
-    this.refInput = ref
-    if (this.props.resize != 'none') {
-      autosize(this.refInput)
-    }
-  }
-
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    this.setValue(nextProps.value)
-  }
-
-  render() {
-    const {autoFocus, border, value, placeholder} = this.props
-
-    return (
-      <InlineInput
-        ref={this.setRef}
-        border={border}
-        onMouseDown={this.onMouseDown}
-        onFocus={this.onFocus}
-        onBlur={this.onBlur}
-        onKeyDown={this.onKeyDown}
-        placeholder={value.length == 0 ? undefined : placeholder}
-        defaultValue={value}
-        autoComplete="off"
-        autoCorrect="off"
-        autoCapitalize="off"
-        spellCheck="false"
-        dataGramm="false"
-        rows={1}
-        autoFocus={autoFocus}
-      />
-    )
-  }
+  return (
+    <InlineInput
+      ref={inputRef}
+      border={border}
+      onMouseDown={handleMouseDown}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
+      onKeyDown={handleKeyDown}
+      placeholder={inputValue.length === 0 ? undefined : placeholder}
+      value={inputValue}
+      onChange={e => setInputValue(e.target.value)}
+      autoComplete="off"
+      autoCorrect="off"
+      autoCapitalize="off"
+      spellCheck="false"
+      dataGramm="false"
+      rows={1}
+      autoFocus={autoFocus}
+    />
+  )
 }
 
 InlineInputController.propTypes = {
   onSave: PropTypes.func,
+  onCancel: PropTypes.func,
   border: PropTypes.bool,
   placeholder: PropTypes.string,
   value: PropTypes.string,
@@ -93,6 +95,7 @@ InlineInputController.propTypes = {
 
 InlineInputController.defaultProps = {
   onSave: () => {},
+  onCancel: () => {},
   placeholder: '',
   value: '',
   border: false,

@@ -5,88 +5,95 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
-var _react = _interopRequireDefault(require("react"));
+var _react = _interopRequireWildcard(require("react"));
 var _propTypes = _interopRequireDefault(require("prop-types"));
 var _Base = require("../styles/Base");
 var _autosize = _interopRequireDefault(require("autosize"));
-class InlineInputController extends _react.default.Component {
-  constructor() {
-    super(...arguments);
-    (0, _defineProperty2.default)(this, "onFocus", e => e.target.select());
-    // This is the way to select all text if mouse clicked
-    (0, _defineProperty2.default)(this, "onMouseDown", e => {
-      if (document.activeElement != e.target) {
-        e.preventDefault();
-        this.refInput.focus();
+function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(e) { return e ? t : r; })(e); }
+function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != typeof e && "function" != typeof e) return { default: e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n.default = e, t && t.set(e, n), n; }
+var InlineInputController = _ref => {
+  var {
+    onSave,
+    border,
+    placeholder,
+    value,
+    autoFocus,
+    resize,
+    onCancel
+  } = _ref;
+  var inputRef = (0, _react.useRef)(null);
+  var [inputValue, setInputValue] = (0, _react.useState)(value);
+
+  // Effect for autosizing and initial autoFocus
+  (0, _react.useEffect)(() => {
+    if (inputRef.current && resize !== 'none') {
+      (0, _autosize.default)(inputRef.current);
+    }
+    if (inputRef.current && autoFocus) {
+      inputRef.current.focus();
+    }
+  }, [resize, autoFocus]);
+
+  // Effect to update value when props change
+  (0, _react.useEffect)(() => {
+    setInputValue(value);
+  }, [value]);
+  var handleFocus = e => e.target.select();
+  var handleMouseDown = e => {
+    if (document.activeElement !== e.target) {
+      e.preventDefault();
+      inputRef.current.focus();
+    }
+  };
+  var handleBlur = () => {
+    updateValue();
+  };
+  var handleKeyDown = e => {
+    if (e.keyCode === 13) {
+      // Enter
+      inputRef.current.blur();
+      e.preventDefault();
+    } else if (e.keyCode === 27) {
+      // Escape
+      setInputValue(value); // Reset to initial value
+      inputRef.current.blur();
+      e.preventDefault();
+    } else if (e.keyCode === 9) {
+      // Tab
+      if (inputValue.length === 0) {
+        onCancel();
       }
-    });
-    (0, _defineProperty2.default)(this, "onBlur", () => {
-      this.updateValue();
-    });
-    (0, _defineProperty2.default)(this, "onKeyDown", e => {
-      if (e.keyCode == 13) {
-        this.refInput.blur();
-        e.preventDefault();
-      }
-      if (e.keyCode == 27) {
-        this.setValue(this.props.value);
-        this.refInput.blur();
-        e.preventDefault();
-      }
-      if (e.keyCode == 9) {
-        if (this.getValue().length == 0) {
-          this.props.onCancel();
-        }
-        this.refInput.blur();
-        e.preventDefault();
-      }
-    });
-    (0, _defineProperty2.default)(this, "getValue", () => this.refInput.value);
-    (0, _defineProperty2.default)(this, "setValue", value => this.refInput.value = value);
-    (0, _defineProperty2.default)(this, "updateValue", () => {
-      if (this.getValue() != this.props.value) {
-        this.props.onSave(this.getValue());
-      }
-    });
-    (0, _defineProperty2.default)(this, "setRef", ref => {
-      this.refInput = ref;
-      if (this.props.resize != 'none') {
-        (0, _autosize.default)(this.refInput);
-      }
-    });
-  }
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    this.setValue(nextProps.value);
-  }
-  render() {
-    var {
-      autoFocus,
-      border,
-      value,
-      placeholder
-    } = this.props;
-    return /*#__PURE__*/_react.default.createElement(_Base.InlineInput, {
-      ref: this.setRef,
-      border: border,
-      onMouseDown: this.onMouseDown,
-      onFocus: this.onFocus,
-      onBlur: this.onBlur,
-      onKeyDown: this.onKeyDown,
-      placeholder: value.length == 0 ? undefined : placeholder,
-      defaultValue: value,
-      autoComplete: "off",
-      autoCorrect: "off",
-      autoCapitalize: "off",
-      spellCheck: "false",
-      dataGramm: "false",
-      rows: 1,
-      autoFocus: autoFocus
-    });
-  }
-}
+      inputRef.current.blur();
+      e.preventDefault();
+    }
+  };
+  var updateValue = () => {
+    if (inputValue !== value) {
+      onSave(inputValue);
+    }
+  };
+  return /*#__PURE__*/_react.default.createElement(_Base.InlineInput, {
+    ref: inputRef,
+    border: border,
+    onMouseDown: handleMouseDown,
+    onFocus: handleFocus,
+    onBlur: handleBlur,
+    onKeyDown: handleKeyDown,
+    placeholder: inputValue.length === 0 ? undefined : placeholder,
+    value: inputValue,
+    onChange: e => setInputValue(e.target.value),
+    autoComplete: "off",
+    autoCorrect: "off",
+    autoCapitalize: "off",
+    spellCheck: "false",
+    dataGramm: "false",
+    rows: 1,
+    autoFocus: autoFocus
+  });
+};
 InlineInputController.propTypes = {
   onSave: _propTypes.default.func,
+  onCancel: _propTypes.default.func,
   border: _propTypes.default.bool,
   placeholder: _propTypes.default.string,
   value: _propTypes.default.string,
@@ -95,6 +102,7 @@ InlineInputController.propTypes = {
 };
 InlineInputController.defaultProps = {
   onSave: () => {},
+  onCancel: () => {},
   placeholder: '',
   value: '',
   border: false,

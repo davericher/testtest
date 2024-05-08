@@ -8,7 +8,7 @@ exports.default = void 0;
 var _react = _interopRequireDefault(require("react"));
 var _Base = require("../../styles/Base");
 var _Elements = require("../../styles/Elements");
-var _default = _ref => {
+var LaneFooterComponent = _ref => {
   var {
     onClick,
     collapsed
@@ -17,4 +17,4 @@ var _default = _ref => {
     onClick: onClick
   }, collapsed ? /*#__PURE__*/_react.default.createElement(_Elements.ExpandBtn, null) : /*#__PURE__*/_react.default.createElement(_Elements.CollapseBtn, null));
 };
-exports.default = _default;
+var _default = exports.default = LaneFooterComponent;

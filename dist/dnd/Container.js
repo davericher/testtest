@@ -5,115 +5,66 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
+var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
 var _react = _interopRequireWildcard(require("react"));
-var _reactDom = _interopRequireDefault(require("react-dom"));
 var _propTypes = _interopRequireDefault(require("prop-types"));
 var _kuikaSmoothDnd = _interopRequireWildcard(require("kuika-smooth-dnd"));
 function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(e) { return e ? t : r; })(e); }
 function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != typeof e && "function" != typeof e) return { default: e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n.default = e, t && t.set(e, n), n; }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { (0, _defineProperty2.default)(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
 _kuikaSmoothDnd.default.dropHandler = _kuikaSmoothDnd.dropHandlers.reactDropHandler().handler;
-_kuikaSmoothDnd.default.wrapChild = p => p; // dont wrap children they will already be wrapped
-
-class Container extends _react.Component {
-  constructor(props) {
-    super(props);
-    this.getContainerOptions = this.getContainerOptions.bind(this);
-    this.setRef = this.setRef.bind(this);
-    this.prevContainer = null;
-  }
-  componentDidMount() {
-    this.containerDiv = this.containerDiv || _reactDom.default.findDOMNode(this);
-    this.prevContainer = this.containerDiv;
-    this.container = (0, _kuikaSmoothDnd.default)(this.containerDiv, this.getContainerOptions());
-  }
-  componentWillUnmount() {
-    this.container.dispose();
-    this.container = null;
-  }
-  componentDidUpdate() {
-    this.containerDiv = this.containerDiv || _reactDom.default.findDOMNode(this);
-    if (this.containerDiv) {
-      if (this.prevContainer && this.prevContainer !== this.containerDiv) {
-        this.container.dispose();
-        this.container = (0, _kuikaSmoothDnd.default)(this.containerDiv, this.getContainerOptions());
-        this.prevContainer = this.containerDiv;
+_kuikaSmoothDnd.default.wrapChild = p => p;
+var Container = props => {
+  var containerDivRef = (0, _react.useRef)(null);
+  var containerInstance = (0, _react.useRef)(null);
+  (0, _react.useEffect)(() => {
+    var getContainerOptions = () => {
+      var functionProps = {
+        onDragStart: props.onDragStart,
+        onDragEnd: props.onDragEnd,
+        onDrop: props.onDrop,
+        getChildPayload: props.getChildPayload,
+        shouldAnimateDrop: props.shouldAnimateDrop,
+        shouldAcceptDrop: props.shouldAcceptDrop,
+        onDragEnter: props.onDragEnter,
+        onDragLeave: props.onDragLeave,
+        onDropReady: props.onDropReady,
+        getGhostParent: props.getGhostParent
+      };
+      return _objectSpread(_objectSpread({}, props), functionProps);
+    };
+    var updateContainer = () => {
+      if (containerInstance.current) {
+        containerInstance.current.dispose();
       }
-    }
+      if (containerDivRef.current) {
+        containerInstance.current = (0, _kuikaSmoothDnd.default)(containerDivRef.current, getContainerOptions());
+      }
+    };
+    updateContainer();
+    return () => {
+      if (containerInstance.current) {
+        containerInstance.current.dispose();
+      }
+    };
+  }, [props]); // Dependencies array ensures effect runs on props change
+
+  var setRef = element => {
+    containerDivRef.current = element;
+  };
+
+  // Render function or default rendering
+  if (props.render) {
+    return props.render(setRef);
+  } else {
+    return /*#__PURE__*/_react.default.createElement("div", {
+      ref: setRef,
+      style: props.style,
+      className: props.className
+    }, props.children);
   }
-  render() {
-    if (this.props.render) {
-      return this.props.render(this.setRef);
-    } else {
-      return /*#__PURE__*/_react.default.createElement("div", {
-        style: this.props.style,
-        ref: this.setRef
-      }, this.props.children);
-    }
-  }
-  setRef(element) {
-    this.containerDiv = element;
-  }
-  getContainerOptions() {
-    var _this = this;
-    var functionProps = {};
-    if (this.props.onDragStart) {
-      functionProps.onDragStart = function () {
-        return _this.props.onDragStart(...arguments);
-      };
-    }
-    if (this.props.onDragEnd) {
-      functionProps.onDragEnd = function () {
-        return _this.props.onDragEnd(...arguments);
-      };
-    }
-    if (this.props.onDrop) {
-      functionProps.onDrop = function () {
-        return _this.props.onDrop(...arguments);
-      };
-    }
-    if (this.props.getChildPayload) {
-      functionProps.getChildPayload = function () {
-        return _this.props.getChildPayload(...arguments);
-      };
-    }
-    if (this.props.shouldAnimateDrop) {
-      functionProps.shouldAnimateDrop = function () {
-        return _this.props.shouldAnimateDrop(...arguments);
-      };
-    }
-    if (this.props.shouldAcceptDrop) {
-      functionProps.shouldAcceptDrop = function () {
-        return _this.props.shouldAcceptDrop(...arguments);
-      };
-    }
-    if (this.props.onDragEnter) {
-      functionProps.onDragEnter = function () {
-        return _this.props.onDragEnter(...arguments);
-      };
-    }
-    if (this.props.onDragLeave) {
-      functionProps.onDragLeave = function () {
-        return _this.props.onDragLeave(...arguments);
-      };
-    }
-    if (this.props.render) {
-      functionProps.render = function () {
-        return _this.props.render(...arguments);
-      };
-    }
-    if (this.props.onDropReady) {
-      functionProps.onDropReady = function () {
-        return _this.props.onDropReady(...arguments);
-      };
-    }
-    if (this.props.getGhostParent) {
-      functionProps.getGhostParent = function () {
-        return _this.props.getGhostParent(...arguments);
-      };
-    }
-    return Object.assign({}, this.props, functionProps);
-  }
-}
+};
 Container.propTypes = {
   behaviour: _propTypes.default.oneOf(['move', 'copy', 'drag-zone']),
   groupName: _propTypes.default.string,

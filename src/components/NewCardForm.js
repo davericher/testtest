@@ -1,47 +1,44 @@
-import React, {Component} from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import {CardForm, CardHeader, CardRightContent, CardTitle, CardWrapper, Detail} from '../styles/Base'
-import {AddButton, CancelButton} from '../styles/Elements'
+import { CardForm, CardHeader, CardRightContent, CardTitle, CardWrapper, Detail } from '../styles/Base'
+import { AddButton, CancelButton } from '../styles/Elements'
 import EditableLabel from '../widgets/EditableLabel'
 
-class NewCardForm extends Component {
-  updateField = (field, value) => {
-    this.setState({[field]: value})
+const NewCardForm = ({ onCancel, onAdd, t }) => {
+  const [title, setTitle] = useState('');
+  const [label, setLabel] = useState('');
+  const [description, setDescription] = useState('');
+
+  const handleAdd = () => {
+    onAdd({ title, label, description });
   }
 
-  handleAdd = () => {
-    this.props.onAdd(this.state)
-  }
-
-  render() {
-    const {onCancel, t} = this.props
-    return (
-      <CardForm>
-        <CardWrapper>
-          <CardHeader>
-            <CardTitle>
-              <EditableLabel
-                placeholder={t('placeholder.title')}
-                onChange={val => this.updateField('title', val)}
-                autoFocus
-              />
-            </CardTitle>
-            <CardRightContent>
-              <EditableLabel placeholder={t('placeholder.label')} onChange={val => this.updateField('label', val)} />
-            </CardRightContent>
-          </CardHeader>
-          <Detail>
+  return (
+    <CardForm>
+      <CardWrapper>
+        <CardHeader>
+          <CardTitle>
             <EditableLabel
-              placeholder={t('placeholder.description')}
-              onChange={val => this.updateField('description', val)}
+              placeholder={t('placeholder.title')}
+              onChange={val => setTitle(val)}
+              autoFocus
             />
-          </Detail>
-        </CardWrapper>
-        <AddButton onClick={this.handleAdd}>{t('button.Add card')}</AddButton>
-        <CancelButton onClick={onCancel}>{t('button.Cancel')}</CancelButton>
-      </CardForm>
-    )
-  }
+          </CardTitle>
+          <CardRightContent>
+            <EditableLabel placeholder={t('placeholder.label')} onChange={val => setLabel(val)} />
+          </CardRightContent>
+        </CardHeader>
+        <Detail>
+          <EditableLabel
+            placeholder={t('placeholder.description')}
+            onChange={val => setDescription(val)}
+          />
+        </Detail>
+      </CardWrapper>
+      <AddButton onClick={handleAdd}>{t('button.Add card')}</AddButton>
+      <CancelButton onClick={onCancel}>{t('button.Cancel')}</CancelButton>
+    </CardForm>
+  )
 }
 
 NewCardForm.propTypes = {
@@ -49,7 +46,5 @@ NewCardForm.propTypes = {
   onAdd: PropTypes.func.isRequired,
   t: PropTypes.func.isRequired
 }
-
-NewCardForm.defaultProps = {}
 
 export default NewCardForm

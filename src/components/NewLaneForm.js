@@ -1,50 +1,49 @@
-import React, {Component} from 'react'
+import React, { useRef } from 'react'
 import PropTypes from 'prop-types'
-import {LaneTitle, NewLaneButtons, Section} from '../styles/Base'
-import {AddButton, CancelButton} from '../styles/Elements'
+import { LaneTitle, NewLaneButtons, Section } from '../styles/Base'
+import { AddButton, CancelButton } from '../styles/Elements'
 import NewLaneTitleEditor from '../widgets/NewLaneTitleEditor'
 import uuidv1 from 'uuid/v1'
 
-class NewLane extends Component {
-  handleSubmit = () => {
-    this.props.onAdd({
+const NewLane = ({ onCancel, onAdd, t }) => {
+  const refInput = useRef(null);
+
+  const handleSubmit = () => {
+    onAdd({
       id: uuidv1(),
-      title: this.getValue()
+      title: getValue()
     })
   }
 
-  getValue = () => this.refInput.getValue()
+  const getValue = () => refInput.current.getValue()
 
-  onClickOutside = (a, b, c) => {
-    if (this.getValue().length > 0) {
-      this.handleSubmit()
+  const onClickOutside = () => {
+    if (getValue().length > 0) {
+      handleSubmit()
     } else {
-      this.props.onCancel()
+      onCancel()
     }
   }
 
-  render() {
-    const {onCancel, t} = this.props
-    return (
-      <Section>
-        <LaneTitle>
-          <NewLaneTitleEditor
-            ref={ref => (this.refInput = ref)}
-            placeholder={t('placeholder.title')}
-            onCancel={this.props.onCancel}
-            onSave={this.handleSubmit}
-            resize="vertical"
-            border
-            autoFocus
-          />
-        </LaneTitle>
-        <NewLaneButtons>
-          <AddButton onClick={this.handleSubmit}>{t('button.Add lane')}</AddButton>
-          <CancelButton onClick={onCancel}>{t('button.Cancel')}</CancelButton>
-        </NewLaneButtons>
-      </Section>
-    )
-  }
+  return (
+    <Section>
+      <LaneTitle>
+        <NewLaneTitleEditor
+          ref={refInput}
+          placeholder={t('placeholder.title')}
+          onCancel={onCancel}
+          onSave={handleSubmit}
+          resize="vertical"
+          border
+          autoFocus
+        />
+      </LaneTitle>
+      <NewLaneButtons>
+        <AddButton onClick={handleSubmit}>{t('button.Add lane')}</AddButton>
+        <CancelButton onClick={onCancel}>{t('button.Cancel')}</CancelButton>
+      </NewLaneButtons>
+    </Section>
+  )
 }
 
 NewLane.propTypes = {
@@ -52,7 +51,5 @@ NewLane.propTypes = {
   onAdd: PropTypes.func.isRequired,
   t: PropTypes.func.isRequired
 }
-
-NewLane.defaultProps = {}
 
 export default NewLane

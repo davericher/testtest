@@ -7,14 +7,18 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = void 0;
 var _react = _interopRequireDefault(require("react"));
 var _Base = require("../styles/Base");
-var _default = _ref => {
+var AddCardLinkComponent = _ref => {
   var {
     onClick,
     t,
     laneId
   } = _ref;
+  var handleClick = event => {
+    event.preventDefault();
+    onClick();
+  };
   return /*#__PURE__*/_react.default.createElement(_Base.AddCardLink, {
-    onClick: onClick
+    onClick: handleClick
   }, t('Click to add card'));
 };
-exports.default = _default;
+var _default = exports.default = AddCardLinkComponent;

@@ -15,24 +15,29 @@ import {
   MenuButton
 } from '../../../styles/Elements'
 
-const TEST = PropTypes.elementType
+const LaneMenu = ({t, onDelete}) => {
+  const handleDelete = (event) => {
+    event.preventDefault();
+    onDelete();
+  }
 
-const LaneMenu = ({t, onDelete}) => (
-  <Popover
-    position="bottom"
-    PopoverContainer={CustomPopoverContainer}
-    PopoverContent={CustomPopoverContent}
-    trigger={<MenuButton>⋮</MenuButton>}>
-    <LaneMenuHeader>
-      <LaneMenuTitle>{t('Lane actions')}</LaneMenuTitle>
-      <DeleteWrapper>
-        <GenDelButton>&#10006;</GenDelButton>
-      </DeleteWrapper>
-    </LaneMenuHeader>
-    <LaneMenuContent>
-      <LaneMenuItem onClick={onDelete}>{t('Delete lane')}</LaneMenuItem>
-    </LaneMenuContent>
-  </Popover>
-)
+  return (
+    <Popover
+      position="bottom"
+      PopoverContainer={CustomPopoverContainer}
+      PopoverContent={CustomPopoverContent}
+      trigger={<MenuButton>⋮</MenuButton>}>
+      <LaneMenuHeader>
+        <LaneMenuTitle>{t('Lane actions')}</LaneMenuTitle>
+        <DeleteWrapper>
+          <GenDelButton onClick={handleDelete}>&#10006;</GenDelButton>
+        </DeleteWrapper>
+      </LaneMenuHeader>
+      <LaneMenuContent>
+        <LaneMenuItem onClick={handleDelete}>{t('Delete lane')}</LaneMenuItem>
+      </LaneMenuContent>
+    </Popover>
+  )
+}
 
 export default LaneMenu
