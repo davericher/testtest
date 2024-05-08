@@ -12,7 +12,6 @@
     "format": "pretty-quick \"src/**/*.js\"",
     "size": "size-limit"
   },
-  "homepage": "https://github.com/ilyasakin/kuika-react-trello",
   "dependencies": {
     "autosize": "^4.0.2",
     "classnames": "^2.2.6",
