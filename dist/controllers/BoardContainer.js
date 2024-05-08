@@ -57,7 +57,7 @@ var BoardContainer = _ref => {
       onDataChange(reducerData);
     }
   }, [reducerData, onDataChange]);
-  var groupName = useMemo(() => "TrelloBoard".concat(id), [id]);
+  var groupName = (0, _react.useMemo)(() => "TrelloBoard".concat(id), [id]);
   var onDragStart = _ref2 => {
     var {
       payload
