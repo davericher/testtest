@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
 import {Popover} from 'react-popopo'
 
@@ -16,11 +15,17 @@ import {
 } from '../../../styles/Elements'
 
 const LaneMenu = ({t, onDelete}) => {
-  const handleDelete = (event) => {
-    event.preventDefault();
-    onDelete();
+  const handleDelete = event => {
+    event.preventDefault()
+    onDelete()
   }
-
+console.log(  DeleteWrapper,
+  GenDelButton,
+  LaneMenuContent,
+  LaneMenuHeader,
+  LaneMenuItem,
+  LaneMenuTitle,
+  MenuButton);
   return (
     <Popover
       position="bottom"

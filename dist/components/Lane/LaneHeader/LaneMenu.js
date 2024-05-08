@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 var _react = _interopRequireDefault(require("react"));
-var _propTypes = _interopRequireDefault(require("prop-types"));
 var _reactPopopo = require("react-popopo");
 var _Base = require("../../../styles/Base");
 var _Elements = require("../../../styles/Elements");
@@ -20,6 +19,7 @@ var LaneMenu = _ref => {
     event.preventDefault();
     onDelete();
   };
+  console.log(_Elements.DeleteWrapper, _Elements.GenDelButton, _Elements.LaneMenuContent, _Elements.LaneMenuHeader, _Elements.LaneMenuItem, _Elements.LaneMenuTitle, _Elements.MenuButton);
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactPopopo.Popover, {
     position: "bottom",
     PopoverContainer: _Base.CustomPopoverContainer,
