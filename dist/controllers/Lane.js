@@ -14,7 +14,7 @@ var _redux = require("redux");
 var _reactRedux = require("react-redux");
 var _isEqual = _interopRequireDefault(require("lodash/isEqual"));
 var _cloneDeep = _interopRequireDefault(require("lodash/cloneDeep"));
-var _v = _interopRequireDefault(require("uuid/v1"));
+var _uuid = require("uuid");
 var _Container = _interopRequireDefault(require("../dnd/Container"));
 var _Draggable = _interopRequireDefault(require("../dnd/Draggable"));
 var laneActions = _interopRequireWildcard(require("../actions/LaneActions"));
@@ -104,7 +104,7 @@ class Lane extends _react.Component {
     });
     (0, _defineProperty2.default)(this, "addNewCard", params => {
       var laneId = this.props.id;
-      var id = (0, _v.default)();
+      var id = (0, _uuid.v1)();
       this.hideEditableCard();
       var card = _objectSpread({
         id

@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 var _react = _interopRequireDefault(require("react"));
-var _Base = require("../../styles/Base");
+var _Base = require("../styles/Base");
 var _jsxRuntime = require("react/jsx-runtime");
 var _default = _ref => {
   var {

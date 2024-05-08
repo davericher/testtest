@@ -3,12 +3,12 @@ import PropTypes from 'prop-types'
 import {LaneTitle, NewLaneButtons, Section} from '../styles/Base'
 import {AddButton, CancelButton} from '../styles/Elements'
 import NewLaneTitleEditor from '../widgets/NewLaneTitleEditor'
-import uuidv1 from 'uuid/v1'
+import {v1} from 'uuid'
 
 class NewLane extends Component {
   handleSubmit = () => {
     this.props.onAdd({
-      id: uuidv1(),
+      id: v1(),
       title: this.getValue()
     })
   }

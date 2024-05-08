@@ -5,7 +5,7 @@ import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import isEqual from 'lodash/isEqual'
 import cloneDeep from 'lodash/cloneDeep'
-import uuidv1 from 'uuid/v1'
+import {v1} from 'uuid'
 
 import Container from '../dnd/Container'
 import Draggable from '../dnd/Draggable'
@@ -98,7 +98,7 @@ class Lane extends Component {
 
   addNewCard = params => {
     const laneId = this.props.id
-    const id = uuidv1()
+    const id = v1()
     this.hideEditableCard()
     let card = {id, ...params}
     this.props.actions.addCard({laneId, card})
