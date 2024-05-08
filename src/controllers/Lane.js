@@ -5,7 +5,7 @@ import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import isEqual from 'lodash/isEqual'
 import cloneDeep from 'lodash/cloneDeep'
-import {v1 as uuidv1} from 'uuid'
+import {v1} from 'uuid'
 
 import Container from '../dnd/Container'
 import Draggable from '../dnd/Draggable'
@@ -64,7 +64,7 @@ const Lane = props => {
   // Function to handle adding a new card
   const addNewCard = params => {
     const laneId = props.id
-    const id = uuidv1() // generate a unique ID for the new card
+    const id = v1() // generate a unique ID for the new card
     hideEditableCard() // Assuming this function toggles the visibility of card add form
     let card = {id, ...params}
     props.actions.addCard({laneId, card})

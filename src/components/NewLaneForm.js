@@ -3,14 +3,14 @@ import PropTypes from 'prop-types'
 import { LaneTitle, NewLaneButtons, Section } from '../styles/Base'
 import { AddButton, CancelButton } from '../styles/Elements'
 import NewLaneTitleEditor from '../widgets/NewLaneTitleEditor'
-import uuidv1 from 'uuid/v1'
+import {v1} from 'uuid'
 
 const NewLane = ({ onCancel, onAdd, t }) => {
   const refInput = useRef(null);
 
   const handleSubmit = () => {
     onAdd({
-      id: uuidv1(),
+      id: v1(),
       title: getValue()
     })
   }

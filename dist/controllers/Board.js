@@ -10,7 +10,7 @@ var _reactRedux = require("react-redux");
 var _classnames = _interopRequireDefault(require("classnames"));
 var _redux = require("redux");
 var _reduxLogger = _interopRequireDefault(require("redux-logger"));
-var _v = _interopRequireDefault(require("uuid/v1"));
+var _uuid = require("uuid");
 var _BoardContainer = _interopRequireDefault(require("./BoardContainer"));
 var _BoardReducer = _interopRequireDefault(require("../reducers/BoardReducer"));
 var _jsxRuntime = require("react/jsx-runtime");
@@ -23,7 +23,7 @@ var Board = _ref => {
     className,
     components
   } = _ref;
-  var [storeId] = (0, _react.useState)(id || (0, _v.default)());
+  var [storeId] = (0, _react.useState)(id || (0, _uuid.v1)());
   var [store] = (0, _react.useState)(() => (0, _redux.createStore)(_BoardReducer.default, (0, _redux.applyMiddleware)(...middlewares)));
   var allClassNames = (0, _classnames.default)('react-trello-board', className || '');
   return /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRedux.Provider, {
