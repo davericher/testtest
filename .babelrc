@@ -8,15 +8,24 @@
         }
       }
     ],
-    "@babel/preset-react"
+    [
+      "@babel/preset-react",
+      {
+        "runtime": "automatic"
+      }
+    ]
   ],
   "plugins": [
     "@babel/plugin-transform-template-literals",
     "@babel/plugin-proposal-class-properties",
-    "@babel/plugin-transform-async-to-generator",
     "@babel/plugin-transform-runtime",
-    ["module-resolver", {
-      "alias": { "rt": "./src/" }
-    }]
+    [
+      "module-resolver",
+      {
+        "alias": {
+          "rt": "./src/"
+        }
+      }
+    ]
   ]
 }

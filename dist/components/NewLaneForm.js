@@ -11,6 +11,7 @@ var _Base = require("../styles/Base");
 var _Elements = require("../styles/Elements");
 var _NewLaneTitleEditor = _interopRequireDefault(require("../widgets/NewLaneTitleEditor"));
 var _v = _interopRequireDefault(require("uuid/v1"));
+var _jsxRuntime = require("react/jsx-runtime");
 function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(e) { return e ? t : r; })(e); }
 function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != typeof e && "function" != typeof e) return { default: e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n.default = e, t && t.set(e, n), n; }
 var NewLane = _ref => {
@@ -34,19 +35,27 @@ var NewLane = _ref => {
       onCancel();
     }
   };
-  return /*#__PURE__*/_react.default.createElement(_Base.Section, null, /*#__PURE__*/_react.default.createElement(_Base.LaneTitle, null, /*#__PURE__*/_react.default.createElement(_NewLaneTitleEditor.default, {
-    ref: refInput,
-    placeholder: t('placeholder.title'),
-    onCancel: onCancel,
-    onSave: handleSubmit,
-    resize: "vertical",
-    border: true,
-    autoFocus: true
-  })), /*#__PURE__*/_react.default.createElement(_Base.NewLaneButtons, null, /*#__PURE__*/_react.default.createElement(_Elements.AddButton, {
-    onClick: handleSubmit
-  }, t('button.Add lane')), /*#__PURE__*/_react.default.createElement(_Elements.CancelButton, {
-    onClick: onCancel
-  }, t('button.Cancel'))));
+  return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Base.Section, {
+    children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_Base.LaneTitle, {
+      children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_NewLaneTitleEditor.default, {
+        ref: refInput,
+        placeholder: t('placeholder.title'),
+        onCancel: onCancel,
+        onSave: handleSubmit,
+        resize: "vertical",
+        border: true,
+        autoFocus: true
+      })
+    }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Base.NewLaneButtons, {
+      children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_Elements.AddButton, {
+        onClick: handleSubmit,
+        children: t('button.Add lane')
+      }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_Elements.CancelButton, {
+        onClick: onCancel,
+        children: t('button.Cancel')
+      })]
+    })]
+  });
 };
 NewLane.propTypes = {
   onCancel: _propTypes.default.func.isRequired,

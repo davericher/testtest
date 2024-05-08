@@ -10,6 +10,7 @@ var _propTypes = _interopRequireDefault(require("prop-types"));
 var _reactPopopo = require("react-popopo");
 var _Base = require("../../../styles/Base");
 var _Elements = require("../../../styles/Elements");
+var _jsxRuntime = require("react/jsx-runtime");
 var LaneMenu = _ref => {
   var {
     t,
@@ -19,15 +20,28 @@ var LaneMenu = _ref => {
     event.preventDefault();
     onDelete();
   };
-  return /*#__PURE__*/_react.default.createElement(_reactPopopo.Popover, {
+  return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactPopopo.Popover, {
     position: "bottom",
     PopoverContainer: _Base.CustomPopoverContainer,
     PopoverContent: _Base.CustomPopoverContent,
-    trigger: /*#__PURE__*/_react.default.createElement(_Elements.MenuButton, null, "\u22EE")
-  }, /*#__PURE__*/_react.default.createElement(_Elements.LaneMenuHeader, null, /*#__PURE__*/_react.default.createElement(_Elements.LaneMenuTitle, null, t('Lane actions')), /*#__PURE__*/_react.default.createElement(_Elements.DeleteWrapper, null, /*#__PURE__*/_react.default.createElement(_Elements.GenDelButton, {
-    onClick: handleDelete
-  }, "\u2716"))), /*#__PURE__*/_react.default.createElement(_Elements.LaneMenuContent, null, /*#__PURE__*/_react.default.createElement(_Elements.LaneMenuItem, {
-    onClick: handleDelete
-  }, t('Delete lane'))));
+    trigger: /*#__PURE__*/(0, _jsxRuntime.jsx)(_Elements.MenuButton, {
+      children: "\u22EE"
+    }),
+    children: [/*#__PURE__*/(0, _jsxRuntime.jsxs)(_Elements.LaneMenuHeader, {
+      children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_Elements.LaneMenuTitle, {
+        children: t('Lane actions')
+      }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_Elements.DeleteWrapper, {
+        children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_Elements.GenDelButton, {
+          onClick: handleDelete,
+          children: "\u2716"
+        })
+      })]
+    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_Elements.LaneMenuContent, {
+      children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_Elements.LaneMenuItem, {
+        onClick: handleDelete,
+        children: t('Delete lane')
+      })
+    })]
+  });
 };
 var _default = exports.default = LaneMenu;

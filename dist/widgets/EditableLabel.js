@@ -8,6 +8,7 @@ exports.default = void 0;
 var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
 var _react = _interopRequireDefault(require("react"));
 var _propTypes = _interopRequireDefault(require("prop-types"));
+var _jsxRuntime = require("react/jsx-runtime");
 class EditableLabel extends _react.default.Component {
   constructor(_ref) {
     var {
@@ -62,7 +63,7 @@ class EditableLabel extends _react.default.Component {
   }
   render() {
     var placeholder = this.props.value.length > 0 ? false : this.props.placeholder;
-    return /*#__PURE__*/_react.default.createElement("div", {
+    return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
       ref: _ref2 => this.refDiv = _ref2,
       contentEditable: "true",
       className: this.getClassName(),

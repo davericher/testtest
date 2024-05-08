@@ -10,6 +10,7 @@ var _propTypes = _interopRequireDefault(require("prop-types"));
 var _InlineInput = _interopRequireDefault(require("../../widgets/InlineInput"));
 var _Base = require("../../styles/Base");
 var _LaneMenu = _interopRequireDefault(require("./LaneHeader/LaneMenu"));
+var _jsxRuntime = require("react/jsx-runtime");
 var LaneHeaderComponent = _ref => {
   var {
     updateTitle,
@@ -24,24 +25,29 @@ var LaneHeaderComponent = _ref => {
     t,
     laneDraggable
   } = _ref;
-  return /*#__PURE__*/_react.default.createElement(_Base.LaneHeader, {
+  return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Base.LaneHeader, {
     onDoubleClick: onDoubleClick,
-    editLaneTitle: editLaneTitle
-  }, /*#__PURE__*/_react.default.createElement(_Base.Title, {
-    draggable: laneDraggable,
-    style: titleStyle
-  }, editLaneTitle ? /*#__PURE__*/_react.default.createElement(_InlineInput.default, {
-    value: title,
-    border: true,
-    placeholder: t('placeholder.title'),
-    resize: "vertical",
-    onSave: updateTitle
-  }) : title), label && /*#__PURE__*/_react.default.createElement(_Base.RightContent, null, /*#__PURE__*/_react.default.createElement("span", {
-    style: labelStyle
-  }, label)), canAddLanes && /*#__PURE__*/_react.default.createElement(_LaneMenu.default, {
-    t: t,
-    onDelete: onDelete
-  }));
+    editLaneTitle: editLaneTitle,
+    children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_Base.Title, {
+      draggable: laneDraggable,
+      style: titleStyle,
+      children: editLaneTitle ? /*#__PURE__*/(0, _jsxRuntime.jsx)(_InlineInput.default, {
+        value: title,
+        border: true,
+        placeholder: t('placeholder.title'),
+        resize: "vertical",
+        onSave: updateTitle
+      }) : title
+    }), label && /*#__PURE__*/(0, _jsxRuntime.jsx)(_Base.RightContent, {
+      children: /*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
+        style: labelStyle,
+        children: label
+      })
+    }), canAddLanes && /*#__PURE__*/(0, _jsxRuntime.jsx)(_LaneMenu.default, {
+      t: t,
+      onDelete: onDelete
+    })]
+  });
 };
 LaneHeaderComponent.propTypes = {
   updateTitle: _propTypes.default.func,

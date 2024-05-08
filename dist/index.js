@@ -53,7 +53,6 @@ Object.defineProperty(exports, "widgets", {
     return _widgets.default;
   }
 });
-var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
 var _objectWithoutProperties2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutProperties"));
 var _react = _interopRequireDefault(require("react"));
@@ -67,6 +66,7 @@ var _components = _interopRequireDefault(require("./components"));
 var _locales = _interopRequireDefault(require("./locales"));
 var _widgets = _interopRequireDefault(require("./widgets"));
 var _createTranslate = _interopRequireDefault(require("./helpers/createTranslate"));
+var _jsxRuntime = require("react/jsx-runtime");
 var _excluded = ["components", "lang"];
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { (0, _defineProperty2.default)(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
@@ -79,7 +79,7 @@ var _default = _ref => {
     otherProps = (0, _objectWithoutProperties2.default)(_ref, _excluded);
   (0, _deprecationWarnings.default)(otherProps);
   var translate = (0, _createTranslate.default)(_locales.default[lang].translation);
-  return /*#__PURE__*/_react.default.createElement(_Board.default, (0, _extends2.default)({
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Board.default, _objectSpread({
     t: translate,
     components: _objectSpread(_objectSpread({}, _components.default), components)
   }, otherProps));

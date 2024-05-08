@@ -10,6 +10,7 @@ var _react = _interopRequireDefault(require("react"));
 var _propTypes = _interopRequireDefault(require("prop-types"));
 var _Base = require("../styles/Base");
 var _autosize = _interopRequireDefault(require("autosize"));
+var _jsxRuntime = require("react/jsx-runtime");
 class NewLaneTitleEditor extends _react.default.Component {
   constructor() {
     super(...arguments);
@@ -61,7 +62,7 @@ class NewLaneTitleEditor extends _react.default.Component {
       value,
       placeholder
     } = this.props;
-    return /*#__PURE__*/_react.default.createElement(_Base.InlineInput, {
+    return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Base.InlineInput, {
       style: {
         resize: resize
       },

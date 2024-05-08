@@ -5,7 +5,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
 var _react = _interopRequireWildcard(require("react"));
 var _classnames = _interopRequireDefault(require("classnames"));
@@ -18,6 +17,7 @@ var _uuid = require("uuid");
 var _Container = _interopRequireDefault(require("../dnd/Container"));
 var _Draggable = _interopRequireDefault(require("../dnd/Draggable"));
 var laneActions = _interopRequireWildcard(require("../actions/LaneActions"));
+var _jsxRuntime = require("react/jsx-runtime");
 function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(e) { return e ? t : r; })(e); }
 function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != typeof e && "function" != typeof e) return { default: e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n.default = e, t && t.set(e, n), n; }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
@@ -187,80 +187,81 @@ var Lane = props => {
 
   // Assuming groupName is used in shouldAcceptDrop and similar methods
   var groupName = "TrelloBoard".concat(props.boardId, "Lane");
-  return /*#__PURE__*/_react.default.createElement(props.components.Section, {
-    key: props.id,
+  return /*#__PURE__*/(0, _jsxRuntime.jsxs)(props.components.Section, {
     onClick: () => props.onLaneClick && props.onLaneClick(props.id),
     draggable: false,
-    className: (0, _classnames.default)('react-trello-lane', props.className || '')
-  }, /*#__PURE__*/_react.default.createElement(props.components.LaneHeader, (0, _extends2.default)({
-    id: props.id,
-    cards: props.cards,
-    onDelete: () => removeCard(props.id),
-    onDoubleClick: () => setState(prevState => _objectSpread(_objectSpread({}, prevState), {}, {
-      collapsed: !prevState.collapsed
-    })),
-    updateTitle: value => {
-      props.actions.updateLane({
-        id: props.id,
-        title: value
-      });
-      props.onLaneUpdate(props.id, {
-        title: value
-      });
-    }
-  }, props)), /*#__PURE__*/_react.default.createElement(props.components.ScrollableLane, {
-    ref: nodeRef,
-    isDraggingOver: state.isDraggingOver
-  }, /*#__PURE__*/_react.default.createElement(_Container.default, {
-    orientation: "vertical",
-    groupName: groupName,
-    dragClass: props.cardDragClass,
-    dropClass: props.cardDropClass,
-    onDragStart: onDragStart,
-    onDrop: e => onDragEnd(props.id, e),
-    onDragEnter: () => setState(prevState => _objectSpread(_objectSpread({}, prevState), {}, {
-      isDraggingOver: true
-    })),
-    onDragLeave: () => setState(prevState => _objectSpread(_objectSpread({}, prevState), {}, {
-      isDraggingOver: false
-    })),
-    shouldAcceptDrop: shouldAcceptDrop,
-    getChildPayload: index => props.getCardDetails(props.id, index)
-  }, props.cards.map((card, idx) => {
-    var cardToRender = /*#__PURE__*/_react.default.createElement(props.components.Card, (0, _extends2.default)({
-      key: card.id,
-      index: idx,
-      style: card.style || props.cardStyle,
-      className: "react-trello-card",
-      onDelete: () => removeCard(card.id),
-      onClick: e => handleCardClick(e, card),
-      onChange: updatedCard => updateCard(updatedCard),
-      showDeleteButton: !props.hideCardDeleteIcon,
-      tagStyle: props.tagStyle,
-      cardDraggable: props.cardDraggable,
-      editable: props.editable,
-      t: props.t
-    }, card));
-    return props.cardDraggable && (!card.hasOwnProperty('draggable') || card.draggable) ? /*#__PURE__*/_react.default.createElement(_Draggable.default, {
-      key: card.id
-    }, cardToRender) : /*#__PURE__*/_react.default.createElement("span", {
-      key: card.id
-    }, cardToRender);
-  })), props.editable && !state.addCardMode && /*#__PURE__*/_react.default.createElement(props.components.AddCardLink, {
-    onClick: showEditableCard,
-    t: props.t,
-    laneId: props.id
-  }), state.addCardMode && /*#__PURE__*/_react.default.createElement(props.components.NewCardForm, {
-    onCancel: hideEditableCard,
-    t: props.t,
-    laneId: props.id,
-    onAdd: addNewCard
-  })), state.loading && /*#__PURE__*/_react.default.createElement(props.components.Loader, null), props.collapsibleLanes && props.cards.length > 0 && /*#__PURE__*/_react.default.createElement(props.components.LaneFooter, {
-    onClick: () => setState(prevState => _objectSpread(_objectSpread({}, prevState), {}, {
-      collapsed: !prevState.collapsed
-    })),
-    collapsed: state.collapsed
-  }));
+    className: (0, _classnames.default)('react-trello-lane', props.className || ''),
+    children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(props.components.LaneHeader, _objectSpread({
+      id: props.id,
+      cards: props.cards,
+      onDelete: () => removeCard(props.id),
+      onDoubleClick: () => setState(prevState => _objectSpread(_objectSpread({}, prevState), {}, {
+        collapsed: !prevState.collapsed
+      })),
+      updateTitle: value => {
+        props.actions.updateLane({
+          id: props.id,
+          title: value
+        });
+        props.onLaneUpdate(props.id, {
+          title: value
+        });
+      }
+    }, props)), /*#__PURE__*/(0, _jsxRuntime.jsxs)(props.components.ScrollableLane, {
+      ref: nodeRef,
+      isDraggingOver: state.isDraggingOver,
+      children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_Container.default, {
+        orientation: "vertical",
+        groupName: groupName,
+        dragClass: props.cardDragClass,
+        dropClass: props.cardDropClass,
+        onDragStart: onDragStart,
+        onDrop: e => onDragEnd(props.id, e),
+        onDragEnter: () => setState(prevState => _objectSpread(_objectSpread({}, prevState), {}, {
+          isDraggingOver: true
+        })),
+        onDragLeave: () => setState(prevState => _objectSpread(_objectSpread({}, prevState), {}, {
+          isDraggingOver: false
+        })),
+        shouldAcceptDrop: shouldAcceptDrop,
+        getChildPayload: index => props.getCardDetails(props.id, index),
+        children: props.cards.map((card, idx) => {
+          var cardToRender = /*#__PURE__*/(0, _jsxRuntime.jsx)(props.components.Card, _objectSpread({
+            index: idx,
+            style: card.style || props.cardStyle,
+            className: "react-trello-card",
+            onDelete: () => removeCard(card.id),
+            onClick: e => handleCardClick(e, card),
+            onChange: updatedCard => updateCard(updatedCard),
+            showDeleteButton: !props.hideCardDeleteIcon,
+            tagStyle: props.tagStyle,
+            cardDraggable: props.cardDraggable,
+            editable: props.editable,
+            t: props.t
+          }, card), card.id);
+          return props.cardDraggable && (!card.hasOwnProperty('draggable') || card.draggable) ? /*#__PURE__*/(0, _jsxRuntime.jsx)(_Draggable.default, {
+            children: cardToRender
+          }, card.id) : /*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
+            children: cardToRender
+          }, card.id);
+        })
+      }), props.editable && !state.addCardMode && /*#__PURE__*/(0, _jsxRuntime.jsx)(props.components.AddCardLink, {
+        onClick: showEditableCard,
+        t: props.t,
+        laneId: props.id
+      }), state.addCardMode && /*#__PURE__*/(0, _jsxRuntime.jsx)(props.components.NewCardForm, {
+        onCancel: hideEditableCard,
+        t: props.t,
+        laneId: props.id,
+        onAdd: addNewCard
+      })]
+    }), state.loading && /*#__PURE__*/(0, _jsxRuntime.jsx)(props.components.Loader, {}), props.collapsibleLanes && props.cards.length > 0 && /*#__PURE__*/(0, _jsxRuntime.jsx)(props.components.LaneFooter, {
+      onClick: () => setState(prevState => _objectSpread(_objectSpread({}, prevState), {}, {
+        collapsed: !prevState.collapsed
+      })),
+      collapsed: state.collapsed
+    })]
+  }, props.id);
 };
 Lane.propTypes = {
   actions: _propTypes.default.object,

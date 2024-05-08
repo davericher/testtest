@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
-var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 var _objectWithoutProperties2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutProperties"));
 var _react = _interopRequireWildcard(require("react"));
 var _redux = require("redux");
@@ -20,6 +19,7 @@ var _Lane = _interopRequireDefault(require("./Lane"));
 var _reactPopopo = require("react-popopo");
 var boardActions = _interopRequireWildcard(require("../actions/BoardActions"));
 var laneActions = _interopRequireWildcard(require("../actions/LaneActions"));
+var _jsxRuntime = require("react/jsx-runtime");
 var _excluded = ["id", "components", "data", "reducerData", "onDataChange", "eventBusHandle", "onLaneScroll", "onCardClick", "onBeforeCardDelete", "onCardDelete", "onCardAdd", "onCardUpdate", "onLaneClick", "onLaneAdd", "onLaneDelete", "onLaneUpdate", "editable", "canAddLanes", "laneStyle", "onCardMoveAcrossLanes", "t"],
   _excluded2 = ["id", "droppable"];
 function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(e) { return e ? t : r; })(e); }
@@ -149,51 +149,55 @@ var BoardContainer = _ref => {
     onLaneAdd(params);
   };
   var passthroughProps = (0, _pick.default)(otherProps, ['onCardMoveAcrossLanes', 'onLaneScroll', 'onLaneDelete', 'onLaneUpdate', 'onCardClick', 'onBeforeCardDelete', 'onCardDelete', 'onCardAdd', 'onCardUpdate', 'onLaneClick', 'laneSortFunction', 'draggable', 'laneDraggable', 'cardDraggable', 'collapsibleLanes', 'canAddLanes', 'hideCardDeleteIcon', 'tagStyle', 'handleDragStart', 'handleDragEnd', 'cardDragClass', 'editLaneTitle', 't']);
-  return /*#__PURE__*/_react.default.createElement(components.BoardWrapper, (0, _extends2.default)({
+  return /*#__PURE__*/(0, _jsxRuntime.jsxs)(components.BoardWrapper, _objectSpread(_objectSpread({
     style: style
-  }, otherProps, {
-    draggable: false
-  }), /*#__PURE__*/_react.default.createElement(_reactPopopo.PopoverWrapper, null, /*#__PURE__*/_react.default.createElement(_Container.default, {
-    orientation: "horizontal",
-    onDragStart: onDragStart,
-    dragClass: laneDragClass,
-    dropClass: laneDropClass,
-    onDrop: onLaneDrop,
-    lockAxis: "x",
-    getChildPayload: index => getLaneDetails(index),
-    groupName: groupName
-  }, reducerData.lanes.map((lane, index) => {
-    var {
-        id,
-        droppable
-      } = lane,
-      otherProps = (0, _objectWithoutProperties2.default)(lane, _excluded2);
-    var laneToRender = /*#__PURE__*/_react.default.createElement(_Lane.default, (0, _extends2.default)({
-      key: id,
-      boardId: groupName,
-      components: components,
-      id: id,
-      getCardDetails: getCardDetails,
-      index: index,
-      droppable: droppable === undefined ? true : droppable,
-      style: laneStyle || lane.style || {},
-      labelStyle: lane.labelStyle || {},
-      cardStyle: cardStyle || lane.cardStyle,
-      editable: editable && !lane.disallowAddingCard
-    }, otherProps, passthroughProps));
-    return draggable && laneDraggable ? /*#__PURE__*/_react.default.createElement(_Draggable.default, {
-      key: lane.id
-    }, laneToRender) : laneToRender;
-  }))), canAddLanes && /*#__PURE__*/_react.default.createElement(_Container.default, {
-    orientation: "horizontal"
-  }, editable && !addLaneMode ? /*#__PURE__*/_react.default.createElement(components.NewLaneSection, {
-    t: t,
-    onClick: showEditableLane
-  }) : addLaneMode && /*#__PURE__*/_react.default.createElement(components.NewLaneForm, {
-    onCancel: hideEditableLane,
-    onAdd: addNewLane,
-    t: t
-  })));
+  }, otherProps), {}, {
+    draggable: false,
+    children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactPopopo.PopoverWrapper, {
+      children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_Container.default, {
+        orientation: "horizontal",
+        onDragStart: onDragStart,
+        dragClass: laneDragClass,
+        dropClass: laneDropClass,
+        onDrop: onLaneDrop,
+        lockAxis: "x",
+        getChildPayload: index => getLaneDetails(index),
+        groupName: groupName,
+        children: reducerData.lanes.map((lane, index) => {
+          var {
+              id,
+              droppable
+            } = lane,
+            otherProps = (0, _objectWithoutProperties2.default)(lane, _excluded2);
+          var laneToRender = /*#__PURE__*/(0, _jsxRuntime.jsx)(_Lane.default, _objectSpread(_objectSpread({
+            boardId: groupName,
+            components: components,
+            id: id,
+            getCardDetails: getCardDetails,
+            index: index,
+            droppable: droppable === undefined ? true : droppable,
+            style: laneStyle || lane.style || {},
+            labelStyle: lane.labelStyle || {},
+            cardStyle: cardStyle || lane.cardStyle,
+            editable: editable && !lane.disallowAddingCard
+          }, otherProps), passthroughProps), id);
+          return draggable && laneDraggable ? /*#__PURE__*/(0, _jsxRuntime.jsx)(_Draggable.default, {
+            children: laneToRender
+          }, lane.id) : laneToRender;
+        })
+      })
+    }), canAddLanes && /*#__PURE__*/(0, _jsxRuntime.jsx)(_Container.default, {
+      orientation: "horizontal",
+      children: editable && !addLaneMode ? /*#__PURE__*/(0, _jsxRuntime.jsx)(components.NewLaneSection, {
+        t: t,
+        onClick: showEditableLane
+      }) : addLaneMode && /*#__PURE__*/(0, _jsxRuntime.jsx)(components.NewLaneForm, {
+        onCancel: hideEditableLane,
+        onAdd: addNewLane,
+        t: t
+      })
+    })]
+  }));
 };
 var mapStateToProps = state => {
   return state.lanes ? {
