@@ -149,7 +149,9 @@ var BoardContainer = _ref => {
         lockAxis: "x",
         getChildPayload: getLaneDetails,
         groupName: groupName,
-        children: reducerData.lanes.map((lane, index) => /*#__PURE__*/(0, _jsxRuntime.jsx)(_Lane.default, _objectSpread({}, _objectSpread(_objectSpread({
+        children: reducerData.lanes.map((lane, index) => /*#__PURE__*/(0, _jsxRuntime.jsx)(_Lane.default, _objectSpread({
+          t: t
+        }, _objectSpread(_objectSpread({
           boardId: groupName,
           components,
           getCardDetails,

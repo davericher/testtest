@@ -13,7 +13,6 @@ import Draggable from '../dnd/Draggable'
 import * as laneActions from '../actions/LaneActions'
 
 const Lane = props => {
-  console.dir(props)
   const [state, setState] = useState({
     loading: false,
     currentPage: props.currentPage,

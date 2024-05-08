@@ -148,6 +148,7 @@ const BoardContainer = ({
           {reducerData.lanes.map((lane, index) => (
             <Lane
               key={lane.id}
+              t={t}
               {...{
                 boardId: groupName,
                 components,
