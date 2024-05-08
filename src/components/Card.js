@@ -79,14 +79,13 @@ class Card extends Component {
             description
           )}
         </Detail>
-        {tags &&
-          tags.length > 0 && (
-            <Footer>
-              {tags.map(tag => (
-                <Tag key={tag.title} {...tag} tagStyle={tagStyle} />
-              ))}
-            </Footer>
-          )}
+        {tags && tags.length > 0 && (
+          <Footer>
+            {tags.map(tag => (
+              <Tag key={tag.title} {...tag} tagStyle={tagStyle} />
+            ))}
+          </Footer>
+        )}
       </MovableCardWrapper>
     )
   }
