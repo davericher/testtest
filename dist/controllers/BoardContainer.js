@@ -12,7 +12,9 @@ var _redux = require("redux");
 var _reactRedux = require("react-redux");
 var _propTypes = _interopRequireDefault(require("prop-types"));
 var _pick = _interopRequireDefault(require("lodash/pick"));
+var _isEqual = _interopRequireDefault(require("lodash/isEqual"));
 var _Container = _interopRequireDefault(require("../dnd/Container"));
+var _Draggable = _interopRequireDefault(require("../dnd/Draggable"));
 var _Lane = _interopRequireDefault(require("./Lane"));
 var _reactPopopo = require("react-popopo");
 var boardActions = _interopRequireWildcard(require("../actions/BoardActions"));
@@ -46,6 +48,7 @@ var BoardContainer = _ref => {
     } = _ref,
     otherProps = (0, _objectWithoutProperties2.default)(_ref, _excluded);
   var [addLaneMode, setAddLaneMode] = (0, _react.useState)(false);
+  var groupName = (0, _react.useMemo)(() => "TrelloBoard".concat(id), [id]);
   (0, _react.useEffect)(() => {
     actions.loadBoard(data);
     if (eventBusHandle) {
@@ -53,11 +56,10 @@ var BoardContainer = _ref => {
     }
   }, [actions, data, eventBusHandle]);
   (0, _react.useEffect)(() => {
-    if (reducerData) {
+    if (!(0, _isEqual.default)(data, reducerData)) {
       onDataChange(reducerData);
     }
-  }, [reducerData, onDataChange]);
-  var groupName = (0, _react.useMemo)(() => "TrelloBoard".concat(id), [id]);
+  }, [reducerData, data, onDataChange]);
   var onDragStart = _ref2 => {
     var {
       payload
@@ -79,49 +81,44 @@ var BoardContainer = _ref => {
     }
   };
   var getCardDetails = (laneId, cardIndex) => {
-    return reducerData.lanes.find(lane => lane.id === laneId).cards[cardIndex];
+    var _reducerData$lanes$fi;
+    return (_reducerData$lanes$fi = reducerData.lanes.find(lane => lane.id === laneId)) === null || _reducerData$lanes$fi === void 0 ? void 0 : _reducerData$lanes$fi.cards[cardIndex];
   };
-  var getLaneDetails = index => {
-    return reducerData.lanes[index];
-  };
+  var getLaneDetails = index => reducerData.lanes[index];
   var wireEventBus = () => {
     var eventBus = {
       publish: event => {
-        switch (event.type) {
-          case 'ADD_CARD':
-            return actions.addCard({
-              laneId: event.laneId,
-              card: event.card
-            });
-          case 'UPDATE_CARD':
-            return actions.updateCard({
-              laneId: event.laneId,
-              card: event.card
-            });
-          case 'REMOVE_CARD':
-            return actions.removeCard({
-              laneId: event.laneId,
-              cardId: event.cardId
-            });
-          case 'REFRESH_BOARD':
-            return actions.loadBoard(event.data);
-          case 'MOVE_CARD':
-            return actions.moveCardAcrossLanes({
-              fromLaneId: event.fromLaneId,
-              toLaneId: event.toLaneId,
-              cardId: event.cardId,
-              index: event.index
-            });
-          case 'UPDATE_CARDS':
-            return actions.updateCards({
-              laneId: event.laneId,
-              cards: event.cards
-            });
-          case 'UPDATE_LANES':
-            return actions.updateLanes(event.lanes);
-          case 'UPDATE_LANE':
-            return actions.updateLane(event.lane);
-        }
+        var {
+          type
+        } = event;
+        var handlers = {
+          ADD_CARD: () => actions.addCard({
+            laneId: event.laneId,
+            card: event.card
+          }),
+          UPDATE_CARD: () => actions.updateCard({
+            laneId: event.laneId,
+            card: event.card
+          }),
+          REMOVE_CARD: () => actions.removeCard({
+            laneId: event.laneId,
+            cardId: event.cardId
+          }),
+          REFRESH_BOARD: () => actions.loadBoard(event.data),
+          MOVE_CARD: () => actions.moveCardAcrossLanes({
+            fromLaneId: event.fromLaneId,
+            toLaneId: event.toLaneId,
+            cardId: event.cardId,
+            index: event.index
+          }),
+          UPDATE_CARDS: () => actions.updateCards({
+            laneId: event.laneId,
+            cards: event.cards
+          }),
+          UPDATE_LANE: () => actions.updateLane(event.lane),
+          UPDATE_LANES: () => actions.updateLanes(event.lanes)
+        };
+        return handlers[type] && handlers[type]();
       }
     };
     eventBusHandle(eventBus);
@@ -133,11 +130,10 @@ var BoardContainer = _ref => {
     actions.addLane(params);
     otherProps.onLaneAdd(params);
   };
-
-  // Stick to whitelisting attributes to segregate board and lane props
-  var passthroughProps = (0, _pick.default)(otherProps, ['onCardMoveAcrossLanes', 'onLaneScroll', 'onLaneDelete', 'onLaneUpdate', 'onCardClick', 'onBeforeCardDelete', 'onCardDelete', 'onCardAdd', 'onCardUpdate', 'onLaneClick', 'laneSortFunction', 'draggable', 'laneDraggable', 'cardDraggable', 'collapsibleLanes', 'canAddLanes', 'hideCardDeleteIcon', 'tagStyle', 'handleDragStart', 'handleDragEnd', 'cardDragClass', 'editLaneTitle', 't']);
-  return /*#__PURE__*/(0, _jsxRuntime.jsxs)(components.BoardWrapper, {
-    style: style,
+  var passthroughProps = (0, _pick.default)(otherProps, ['onCardMoveAcrossLanes', 'onLaneScroll', 'onLaneDelete', 'onLaneUpdate', 'onCardClick', 'onBeforeCardDelete', 'onCardDelete', 'onCardAdd', 'onCardUpdate', 'onLaneClick', 'laneSortFunction', 'draggable', 'laneDraggable', 'cardDraggable', 'collapsibleLanes', 'canAddLanes', 'hideCardDeleteIcon', 'tagStyle', 'handleDragStart', 'handleDragEnd', 'cardDragClass', 'editLaneTitle']);
+  return /*#__PURE__*/(0, _jsxRuntime.jsxs)(components.BoardWrapper, _objectSpread(_objectSpread({
+    style: style
+  }, otherProps), {}, {
     draggable: false,
     children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactPopopo.PopoverWrapper, {
       children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_Container.default, {
@@ -149,29 +145,38 @@ var BoardContainer = _ref => {
         lockAxis: "x",
         getChildPayload: getLaneDetails,
         groupName: groupName,
-        children: reducerData.lanes.map((lane, index) => /*#__PURE__*/(0, _jsxRuntime.jsx)(_Lane.default, _objectSpread({
-          t: t
-        }, _objectSpread(_objectSpread({
-          boardId: groupName,
-          components,
-          getCardDetails,
-          index,
-          style: laneStyle || lane.style || {},
-          editable
-        }, lane), passthroughProps)), lane.id))
+        children: reducerData.lanes.map((lane, index) => {
+          var laneProps = _objectSpread({
+            id: lane.id,
+            droppable: lane.droppable !== undefined ? lane.droppable : true
+          }, lane);
+          return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Draggable.default, {
+            draggable: draggable && laneDraggable,
+            children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_Lane.default, _objectSpread(_objectSpread({
+              t: t,
+              boardId: groupName,
+              components: components,
+              id: lane.id,
+              getCardDetails: getCardDetails,
+              index: index,
+              style: laneStyle || lane.style,
+              editable: editable && !lane.disallowAddingCard
+            }, laneProps), passthroughProps), lane.id)
+          }, lane.id);
+        })
       })
-    }), canAddLanes && /*#__PURE__*/(0, _jsxRuntime.jsx)(_Container.default, {
+    }), canAddLanes && editable && /*#__PURE__*/(0, _jsxRuntime.jsx)(_Container.default, {
       orientation: "horizontal",
-      children: editable && !addLaneMode ? /*#__PURE__*/(0, _jsxRuntime.jsx)(components.NewLaneSection, {
+      children: !addLaneMode ? /*#__PURE__*/(0, _jsxRuntime.jsx)(components.NewLaneSection, {
         t: t,
         onClick: showEditableLane
-      }) : addLaneMode && /*#__PURE__*/(0, _jsxRuntime.jsx)(components.NewLaneForm, {
+      }) : /*#__PURE__*/(0, _jsxRuntime.jsx)(components.NewLaneForm, {
         onCancel: hideEditableLane,
         onAdd: addNewLane,
         t: t
       })
     })]
-  });
+  }));
 };
 BoardContainer.propTypes = {
   id: _propTypes.default.string,

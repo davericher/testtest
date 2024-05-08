@@ -3,7 +3,9 @@ import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import pick from 'lodash/pick'
+import isEqual from 'lodash/isEqual'
 import Container from '../dnd/Container'
+import Draggable from '../dnd/Draggable'
 import Lane from './Lane'
 import {PopoverWrapper} from 'react-popopo'
 
@@ -33,6 +35,8 @@ const BoardContainer = ({
 }) => {
   const [addLaneMode, setAddLaneMode] = useState(false)
 
+  const groupName = useMemo(() => `TrelloBoard${id}`, [id])
+
   useEffect(() => {
     actions.loadBoard(data)
     if (eventBusHandle) {
@@ -41,12 +45,10 @@ const BoardContainer = ({
   }, [actions, data, eventBusHandle])
 
   useEffect(() => {
-    if (reducerData) {
+    if (!isEqual(data, reducerData)) {
       onDataChange(reducerData)
     }
-  }, [reducerData, onDataChange])
-
-  const groupName = useMemo(() => `TrelloBoard${id}`, [id])
+  }, [reducerData, data, onDataChange])
 
   const onDragStart = ({payload}) => {
     handleLaneDragStart(payload.id)
@@ -59,40 +61,30 @@ const BoardContainer = ({
     }
   }
 
-  const getCardDetails = (laneId, cardIndex) => {
-    return reducerData.lanes.find(lane => lane.id === laneId).cards[cardIndex]
-  }
-
-  const getLaneDetails = index => {
-    return reducerData.lanes[index]
-  }
+  const getCardDetails = (laneId, cardIndex) => reducerData.lanes.find(lane => lane.id === laneId)?.cards[cardIndex]
+  const getLaneDetails = index => reducerData.lanes[index]
 
   const wireEventBus = () => {
     const eventBus = {
       publish: event => {
-        switch (event.type) {
-          case 'ADD_CARD':
-            return actions.addCard({laneId: event.laneId, card: event.card})
-          case 'UPDATE_CARD':
-            return actions.updateCard({laneId: event.laneId, card: event.card})
-          case 'REMOVE_CARD':
-            return actions.removeCard({laneId: event.laneId, cardId: event.cardId})
-          case 'REFRESH_BOARD':
-            return actions.loadBoard(event.data)
-          case 'MOVE_CARD':
-            return actions.moveCardAcrossLanes({
+        const {type} = event
+        const handlers = {
+          ADD_CARD: () => actions.addCard({laneId: event.laneId, card: event.card}),
+          UPDATE_CARD: () => actions.updateCard({laneId: event.laneId, card: event.card}),
+          REMOVE_CARD: () => actions.removeCard({laneId: event.laneId, cardId: event.cardId}),
+          REFRESH_BOARD: () => actions.loadBoard(event.data),
+          MOVE_CARD: () =>
+            actions.moveCardAcrossLanes({
               fromLaneId: event.fromLaneId,
               toLaneId: event.toLaneId,
               cardId: event.cardId,
               index: event.index
-            })
-          case 'UPDATE_CARDS':
-            return actions.updateCards({laneId: event.laneId, cards: event.cards})
-          case 'UPDATE_LANES':
-            return actions.updateLanes(event.lanes)
-          case 'UPDATE_LANE':
-            return actions.updateLane(event.lane)
+            }),
+          UPDATE_CARDS: () => actions.updateCards({laneId: event.laneId, cards: event.cards}),
+          UPDATE_LANE: () => actions.updateLane(event.lane),
+          UPDATE_LANES: () => actions.updateLanes(event.lanes)
         }
+        return handlers[type] && handlers[type]()
       }
     }
     eventBusHandle(eventBus)
@@ -106,7 +98,6 @@ const BoardContainer = ({
     otherProps.onLaneAdd(params)
   }
 
-  // Stick to whitelisting attributes to segregate board and lane props
   const passthroughProps = pick(otherProps, [
     'onCardMoveAcrossLanes',
     'onLaneScroll',
@@ -129,12 +120,11 @@ const BoardContainer = ({
     'handleDragStart',
     'handleDragEnd',
     'cardDragClass',
-    'editLaneTitle',
-    't'
+    'editLaneTitle'
   ])
 
   return (
-    <components.BoardWrapper style={style} draggable={false}>
+    <components.BoardWrapper style={style} {...otherProps} draggable={false}>
       <PopoverWrapper>
         <Container
           orientation="horizontal"
@@ -145,30 +135,34 @@ const BoardContainer = ({
           lockAxis="x"
           getChildPayload={getLaneDetails}
           groupName={groupName}>
-          {reducerData.lanes.map((lane, index) => (
-            <Lane
-              key={lane.id}
-              t={t}
-              {...{
-                boardId: groupName,
-                components,
-                getCardDetails,
-                index,
-                style: laneStyle || lane.style || {},
-                editable,
-                ...lane,
-                ...passthroughProps
-              }}
-            />
-          ))}
+          {reducerData.lanes.map((lane, index) => {
+            const laneProps = {id: lane.id, droppable: lane.droppable !== undefined ? lane.droppable : true, ...lane}
+            return (
+              <Draggable key={lane.id} draggable={draggable && laneDraggable}>
+                <Lane
+                  t={t}
+                  key={lane.id}
+                  boardId={groupName}
+                  components={components}
+                  id={lane.id}
+                  getCardDetails={getCardDetails}
+                  index={index}
+                  style={laneStyle || lane.style}
+                  editable={editable && !lane.disallowAddingCard}
+                  {...laneProps}
+                  {...passthroughProps}
+                />
+              </Draggable>
+            )
+          })}
         </Container>
       </PopoverWrapper>
-      {canAddLanes && (
+      {canAddLanes && editable && (
         <Container orientation="horizontal">
-          {editable && !addLaneMode ? (
+          {!addLaneMode ? (
             <components.NewLaneSection t={t} onClick={showEditableLane} />
           ) : (
-            addLaneMode && <components.NewLaneForm onCancel={hideEditableLane} onAdd={addNewLane} t={t} />
+            <components.NewLaneForm onCancel={hideEditableLane} onAdd={addNewLane} t={t} />
           )}
         </Container>
       )}
