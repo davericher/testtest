@@ -12,6 +12,7 @@
     "format": "pretty-quick \"src/**/*.js\""
   },
   "dependencies": {
+    "@emotion/is-prop-valid": "^1.2.2",
     "@reduxjs/toolkit": "^2.2.3",
     "autosize": "^6.0.1",
     "classnames": "^2.2.6",

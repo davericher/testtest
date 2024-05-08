@@ -66,6 +66,8 @@ var _components = _interopRequireDefault(require("./components"));
 var _locales = _interopRequireDefault(require("./locales"));
 var _widgets = _interopRequireDefault(require("./widgets"));
 var _createTranslate = _interopRequireDefault(require("./helpers/createTranslate"));
+var _styledComponents = require("styled-components");
+var _isPropValid = _interopRequireDefault(require("@emotion/is-prop-valid"));
 var _jsxRuntime = require("react/jsx-runtime");
 var _excluded = ["components", "lang"];
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
@@ -82,9 +84,18 @@ var TrelloBoard = _ref => {
     otherProps = (0, _objectWithoutProperties2.default)(_ref, _excluded);
   (0, _deprecationWarnings.default)(otherProps);
   var translate = (0, _createTranslate.default)(((_locales$lang = _locales.default[lang]) === null || _locales$lang === void 0 ? void 0 : _locales$lang.translation) || {});
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Board.default, _objectSpread({
-    t: translate,
-    components: _objectSpread(_objectSpread({}, _components.default), components)
-  }, otherProps));
+  return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_styledComponents.StyleSheetManager, {
+    shouldForwardProp: shouldForwardProp,
+    children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_Board.default, _objectSpread({
+      t: translate,
+      components: _objectSpread(_objectSpread({}, _components.default), components)
+    }, otherProps)), ";"]
+  });
+};
+var shouldForwardProp = (propName, target) => {
+  if (typeof target === 'string') {
+    return (0, _isPropValid.default)(propName);
+  }
+  return true;
 };
 var _default = exports.default = TrelloBoard;
