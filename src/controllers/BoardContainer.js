@@ -1,71 +1,74 @@
-import React, {Component} from 'react'
+import React, {useEffect, useState} from 'react'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import Container from '../dnd/Container'
-import Draggable from '../dnd/Draggable'
 import PropTypes from 'prop-types'
 import pick from 'lodash/pick'
-import isEqual from 'lodash/isEqual'
+import Container from '../dnd/Container'
 import Lane from './Lane'
 import {PopoverWrapper} from 'react-popopo'
 
 import * as boardActions from '../actions/BoardActions'
 import * as laneActions from '../actions/LaneActions'
 
-class BoardContainer extends Component {
-  state = {
-    addLaneMode: false
-  }
+const BoardContainer = ({
+  id,
+  components,
+  actions,
+  data,
+  reducerData,
+  onDataChange,
+  eventBusHandle,
+  handleLaneDragStart,
+  handleLaneDragEnd,
+  draggable,
+  laneDraggable,
+  laneDragClass,
+  laneDropClass,
+  style,
+  laneStyle,
+  editable,
+  canAddLanes,
+  t,
+  ...otherProps
+}) => {
+  const [addLaneMode, setAddLaneMode] = useState(false)
 
-  get groupName() {
-    const {id} = this.props
-    return `TrelloBoard${id}`
-  }
-
-  componentDidMount() {
-    const {actions, eventBusHandle} = this.props
-    actions.loadBoard(this.props.data)
+  useEffect(() => {
+    actions.loadBoard(data)
     if (eventBusHandle) {
-      this.wireEventBus()
+      wireEventBus()
     }
-  }
+  }, [actions, data, eventBusHandle])
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    // nextProps.data changes when external Board input props change and nextProps.reducerData changes due to event bus or UI changes
-    const {data, reducerData, onDataChange} = this.props
-    if (nextProps.reducerData && !isEqual(reducerData, nextProps.reducerData)) {
-      onDataChange(nextProps.reducerData)
+  useEffect(() => {
+    if (reducerData) {
+      onDataChange(reducerData)
     }
-    if (nextProps.data && !isEqual(nextProps.data, data)) {
-      this.props.actions.loadBoard(nextProps.data)
-      onDataChange(nextProps.data)
-    }
-  }
+  }, [reducerData, onDataChange])
 
-  onDragStart = ({payload}) => {
-    const {handleLaneDragStart} = this.props
+  const groupName = useMemo(() => `TrelloBoard${id}`, [id])
+
+  const onDragStart = ({payload}) => {
     handleLaneDragStart(payload.id)
   }
 
-  onLaneDrop = ({removedIndex, addedIndex, payload}) => {
-    const {actions, handleLaneDragEnd} = this.props
+  const onLaneDrop = ({removedIndex, addedIndex, payload}) => {
     if (removedIndex !== addedIndex) {
       actions.moveLane({oldIndex: removedIndex, newIndex: addedIndex})
       handleLaneDragEnd(removedIndex, addedIndex, payload)
     }
   }
 
-  getCardDetails = (laneId, cardIndex) => {
-    return this.props.reducerData.lanes.find(lane => lane.id === laneId).cards[cardIndex]
+  const getCardDetails = (laneId, cardIndex) => {
+    return reducerData.lanes.find(lane => lane.id === laneId).cards[cardIndex]
   }
 
-  getLaneDetails = index => {
-    return this.props.reducerData.lanes[index]
+  const getLaneDetails = index => {
+    return reducerData.lanes[index]
   }
 
-  wireEventBus = () => {
-    const {actions, eventBusHandle} = this.props
-    let eventBus = {
+  const wireEventBus = () => {
+    const eventBus = {
       publish: event => {
         switch (event.type) {
           case 'ADD_CARD':
@@ -85,8 +88,6 @@ class BoardContainer extends Component {
             })
           case 'UPDATE_CARDS':
             return actions.updateCards({laneId: event.laneId, cards: event.cards})
-          case 'UPDATE_CARD':
-            return actions.updateCard({laneId: event.laneId, updatedCard: event.card})
           case 'UPDATE_LANES':
             return actions.updateLanes(event.lanes)
           case 'UPDATE_LANE':
@@ -97,125 +98,81 @@ class BoardContainer extends Component {
     eventBusHandle(eventBus)
   }
 
-  // + add
-  hideEditableLane = () => {
-    this.setState({addLaneMode: false})
+  const hideEditableLane = () => setAddLaneMode(false)
+  const showEditableLane = () => setAddLaneMode(true)
+  const addNewLane = params => {
+    hideEditableLane()
+    actions.addLane(params)
+    otherProps.onLaneAdd(params)
   }
 
-  showEditableLane = () => {
-    this.setState({addLaneMode: true})
-  }
+  // Stick to whitelisting attributes to segregate board and lane props
+  const passthroughProps = pick(otherProps, [
+    'onCardMoveAcrossLanes',
+    'onLaneScroll',
+    'onLaneDelete',
+    'onLaneUpdate',
+    'onCardClick',
+    'onBeforeCardDelete',
+    'onCardDelete',
+    'onCardAdd',
+    'onCardUpdate',
+    'onLaneClick',
+    'laneSortFunction',
+    'draggable',
+    'laneDraggable',
+    'cardDraggable',
+    'collapsibleLanes',
+    'canAddLanes',
+    'hideCardDeleteIcon',
+    'tagStyle',
+    'handleDragStart',
+    'handleDragEnd',
+    'cardDragClass',
+    'editLaneTitle',
+    't'
+  ])
 
-  addNewLane = params => {
-    this.hideEditableLane()
-    this.props.actions.addLane(params)
-    this.props.onLaneAdd(params)
-  }
-
-  render() {
-    const {
-      id,
-      components,
-      reducerData,
-      draggable,
-      laneDraggable,
-      laneDragClass,
-      laneDropClass,
-      style,
-      onDataChange,
-      onCardAdd,
-      onCardUpdate,
-      onCardClick,
-      onBeforeCardDelete,
-      onCardDelete,
-      onLaneScroll,
-      onLaneClick,
-      onLaneAdd,
-      onLaneDelete,
-      onLaneUpdate,
-      editable,
-      canAddLanes,
-      laneStyle,
-      onCardMoveAcrossLanes,
-      t,
-      ...otherProps
-    } = this.props
-
-    const {addLaneMode} = this.state
-    // Stick to whitelisting attributes to segregate board and lane props
-    const passthroughProps = pick(this.props, [
-      'onCardMoveAcrossLanes',
-      'onLaneScroll',
-      'onLaneDelete',
-      'onLaneUpdate',
-      'onCardClick',
-      'onBeforeCardDelete',
-      'onCardDelete',
-      'onCardAdd',
-      'onCardUpdate',
-      'onLaneClick',
-      'laneSortFunction',
-      'draggable',
-      'laneDraggable',
-      'cardDraggable',
-      'collapsibleLanes',
-      'canAddLanes',
-      'hideCardDeleteIcon',
-      'tagStyle',
-      'handleDragStart',
-      'handleDragEnd',
-      'cardDragClass',
-      'editLaneTitle',
-      't'
-    ])
-
-    return (
-      <components.BoardWrapper style={style} {...otherProps} draggable={false}>
-        <PopoverWrapper>
-          <Container
-            orientation="horizontal"
-            onDragStart={this.onDragStart}
-            dragClass={laneDragClass}
-            dropClass={laneDropClass}
-            onDrop={this.onLaneDrop}
-            lockAxis="x"
-            getChildPayload={index => this.getLaneDetails(index)}
-            groupName={this.groupName}>
-            {reducerData.lanes.map((lane, index) => {
-              const {id, droppable, ...otherProps} = lane
-              const laneToRender = (
-                <Lane
-                  key={id}
-                  boardId={this.groupName}
-                  components={components}
-                  id={id}
-                  getCardDetails={this.getCardDetails}
-                  index={index}
-                  droppable={droppable === undefined ? true : droppable}
-                  style={laneStyle || lane.style || {}}
-                  labelStyle={lane.labelStyle || {}}
-                  cardStyle={this.props.cardStyle || lane.cardStyle}
-                  editable={editable && !lane.disallowAddingCard}
-                  {...otherProps}
-                  {...passthroughProps}
-                />
-              )
-              return draggable && laneDraggable ? <Draggable key={lane.id}>{laneToRender}</Draggable> : laneToRender
-            })}
-          </Container>
-        </PopoverWrapper>
-        {canAddLanes && (
-          <Container orientation="horizontal">
-            {editable && !addLaneMode ? (
-              <components.NewLaneSection t={t} onClick={this.showEditableLane} />
-            ) : (
-              addLaneMode && <components.NewLaneForm onCancel={this.hideEditableLane} onAdd={this.addNewLane} t={t} />
-            )}
-          </Container>
-        )}
-      </components.BoardWrapper>
-    )
-  }
+  return (
+    <components.BoardWrapper style={style} draggable={false}>
+      <PopoverWrapper>
+        <Container
+          orientation="horizontal"
+          onDragStart={onDragStart}
+          dragClass={laneDragClass}
+          dropClass={laneDropClass}
+          onDrop={onLaneDrop}
+          lockAxis="x"
+          getChildPayload={getLaneDetails}
+          groupName={groupName}>
+          {reducerData.lanes.map((lane, index) => (
+            <Lane
+              key={lane.id}
+              {...{
+                boardId: groupName,
+                components,
+                getCardDetails,
+                index,
+                style: laneStyle || lane.style || {},
+                editable,
+                ...lane,
+                ...passthroughProps
+              }}
+            />
+          ))}
+        </Container>
+      </PopoverWrapper>
+      {canAddLanes && (
+        <Container orientation="horizontal">
+          {editable && !addLaneMode ? (
+            <components.NewLaneSection t={t} onClick={showEditableLane} />
+          ) : (
+            addLaneMode && <components.NewLaneForm onCancel={hideEditableLane} onAdd={addNewLane} t={t} />
+          )}
+        </Container>
+      )}
+    </components.BoardWrapper>
+  )
 }
 
 BoardContainer.propTypes = {
@@ -281,13 +238,12 @@ BoardContainer.defaultProps = {
   laneDropClass: ''
 }
 
-const mapStateToProps = state => {
-  return state.lanes ? {reducerData: state} : {}
-}
+const mapStateToProps = state => ({
+  reducerData: state.lanes ? state : {}
+})
 
-const mapDispatchToProps = dispatch => ({actions: bindActionCreators({...boardActions, ...laneActions}, dispatch)})
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators({...boardActions, ...laneActions}, dispatch)
+})
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(BoardContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(BoardContainer)
