@@ -141,6 +141,7 @@ const BoardContainer = ({
               <Draggable key={lane.id} draggable={draggable && laneDraggable}>
                 <Lane
                   t={t}
+                  data={data}
                   key={lane.id}
                   boardId={groupName}
                   components={components}

@@ -154,6 +154,7 @@ var BoardContainer = _ref => {
             draggable: draggable && laneDraggable,
             children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_Lane.default, _objectSpread(_objectSpread({
               t: t,
+              data: data,
               boardId: groupName,
               components: components,
               id: lane.id,
