@@ -174,7 +174,7 @@ class BoardContainer extends Component {
       <components.BoardWrapper style={style} {...otherProps} draggable={false}>
         <PopoverWrapper>
           <Container
-            orientation="horizontal"
+            orientation="vertical"
             onDragStart={this.onDragStart}
             dragClass={laneDragClass}
             dropClass={laneDropClass}
@@ -206,7 +206,7 @@ class BoardContainer extends Component {
           </Container>
         </PopoverWrapper>
         {canAddLanes && (
-          <Container orientation="horizontal">
+          <Container orientation="vertical">
             {editable && !addLaneMode ? (
               <components.NewLaneSection t={t} onClick={this.showEditableLane} />
             ) : (
