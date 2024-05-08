@@ -5,18 +5,18 @@ import {LaneHeader, RightContent, Title} from '../../styles/Base'
 import LaneMenu from './LaneHeader/LaneMenu'
 
 const LaneHeaderComponent = ({
-                               updateTitle,
-                               canAddLanes,
-                               onDelete,
-                               onDoubleClick,
-                               editLaneTitle,
-                               label,
-                               title,
-                               titleStyle,
-                               labelStyle,
-                               t,
-                               laneDraggable
-                             }) => {
+  updateTitle,
+  canAddLanes,
+  onDelete,
+  onDoubleClick,
+  editLaneTitle,
+  label,
+  title,
+  titleStyle,
+  labelStyle,
+  t,
+  laneDraggable
+}) => {
   return (
     <LaneHeader onDoubleClick={onDoubleClick} editLaneTitle={editLaneTitle}>
       <Title draggable={laneDraggable} style={titleStyle}>

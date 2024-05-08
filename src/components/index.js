@@ -1,5 +1,5 @@
-import LaneHeader from './Lane/LaneHeader'
-import LaneFooter from './Lane/LaneFooter'
+import LaneHeaderComponent from './Lane/LaneHeader'
+import LaneFooterComponent from './Lane/LaneFooter'
 import Card from './Card'
 import Loader from './Loader'
 import NewLaneForm from './NewLaneForm'
@@ -13,8 +13,8 @@ export default {
   BoardWrapper,
   Loader,
   ScrollableLane,
-  LaneHeader,
-  LaneFooter,
+  LaneHeader: LaneHeaderComponent,
+  LaneFooter: LaneFooterComponent,
   Section,
   NewLaneForm,
   NewLaneSection,
