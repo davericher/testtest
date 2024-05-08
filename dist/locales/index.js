@@ -7,12 +7,12 @@ exports.default = void 0;
 // i18next support structure
 var _default = exports.default = {
   "en": {
-    translation: require("./en/translation.json")
+    translation: require('./en/translation.json')
   },
   "ru": {
-    translation: require("./ru/translation.json")
+    translation: require('./ru/translation.json')
   },
   "pt-br": {
-    translation: require("./pt-br/translation.json")
+    translation: require('./pt-br/translation.json')
   }
 };
