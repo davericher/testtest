@@ -204,7 +204,7 @@ class BoardContainer extends _react.Component {
       draggable: false,
       children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactPopopo.PopoverWrapper, {
         children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_Container.default, {
-          orientation: "vertical",
+          orientation: "horizontal",
           onDragStart: this.onDragStart,
           dragClass: laneDragClass,
           dropClass: laneDropClass,
@@ -236,7 +236,7 @@ class BoardContainer extends _react.Component {
           })
         })
       }), canAddLanes && /*#__PURE__*/(0, _jsxRuntime.jsx)(_Container.default, {
-        orientation: "vertical",
+        orientation: "horizontal",
         children: editable && !addLaneMode ? /*#__PURE__*/(0, _jsxRuntime.jsx)(components.NewLaneSection, {
           t: t,
           onClick: this.showEditableLane
