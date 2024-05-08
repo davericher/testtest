@@ -6,20 +6,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 var _react = _interopRequireDefault(require("react"));
+var _propTypes = _interopRequireDefault(require("prop-types"));
 var _reactPopopo = require("react-popopo");
 var _Base = require("../../../styles/Base");
 var _Elements = require("../../../styles/Elements");
 var _jsxRuntime = require("react/jsx-runtime");
+var TEST = _propTypes.default.elementType;
 var LaneMenu = _ref => {
   var {
     t,
     onDelete
   } = _ref;
-  var handleDelete = event => {
-    event.preventDefault();
-    onDelete();
-  };
-  console.log(_Elements.DeleteWrapper, _Elements.GenDelButton, _Elements.LaneMenuContent, _Elements.LaneMenuHeader, _Elements.LaneMenuItem, _Elements.LaneMenuTitle, _Elements.MenuButton);
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactPopopo.Popover, {
     position: "bottom",
     PopoverContainer: _Base.CustomPopoverContainer,
@@ -32,13 +29,12 @@ var LaneMenu = _ref => {
         children: t('Lane actions')
       }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_Elements.DeleteWrapper, {
         children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_Elements.GenDelButton, {
-          onClick: handleDelete,
           children: "\u2716"
         })
       })]
     }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_Elements.LaneMenuContent, {
       children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_Elements.LaneMenuItem, {
-        onClick: handleDelete,
+        onClick: onDelete,
         children: t('Delete lane')
       })
     })]

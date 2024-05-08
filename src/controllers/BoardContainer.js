@@ -287,4 +287,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({actions: bindActionCreators({...boardActions, ...laneActions}, dispatch)})
 
-export default connect(mapStateToProps, mapDispatchToProps)(BoardContainer)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(BoardContainer)

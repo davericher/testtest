@@ -9,7 +9,7 @@ var _react = _interopRequireDefault(require("react"));
 var _Base = require("../../styles/Base");
 var _Elements = require("../../styles/Elements");
 var _jsxRuntime = require("react/jsx-runtime");
-var LaneFooterComponent = _ref => {
+var _default = _ref => {
   var {
     onClick,
     collapsed
@@ -19,4 +19,4 @@ var LaneFooterComponent = _ref => {
     children: collapsed ? /*#__PURE__*/(0, _jsxRuntime.jsx)(_Elements.ExpandBtn, {}) : /*#__PURE__*/(0, _jsxRuntime.jsx)(_Elements.CollapseBtn, {})
   });
 };
-var _default = exports.default = LaneFooterComponent;
+exports.default = _default;

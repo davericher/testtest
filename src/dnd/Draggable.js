@@ -1,28 +1,26 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { constants } from 'kuika-smooth-dnd';
+import React, {Component} from 'react'
+import PropTypes from 'prop-types'
+import {constants} from 'kuika-smooth-dnd'
 
-const { wrapperClass } = constants;
+const {wrapperClass} = constants
 
-const Draggable = ({ render, className, children, ...props }) => {
-  if (render) {
-    // Use React.cloneElement to append the class to the rendered component
-    return React.cloneElement(render(), { className: `${className ? className + ' ' : ''}${wrapperClass}` });
+class Draggable extends Component {
+  render() {
+    if (this.props.render) {
+      return React.cloneElement(this.props.render(), {className: wrapperClass})
+    }
+
+    const clsName = `${this.props.className ? this.props.className + ' ' : ''}`
+    return (
+      <div {...this.props} className={`${clsName}${wrapperClass}`}>
+        {this.props.children}
+      </div>
+    )
   }
-
-  // Construct the class name from props, appending the wrapperClass
-  const clsName = `${className ? className + ' ' : ''}${wrapperClass}`;
-  return (
-    <div {...props} className={clsName}>
-      {children}
-    </div>
-  );
-};
+}
 
 Draggable.propTypes = {
-  render: PropTypes.func,
-  className: PropTypes.string,
-  children: PropTypes.node
-};
+  render: PropTypes.func
+}
 
-export default Draggable;
+export default Draggable
